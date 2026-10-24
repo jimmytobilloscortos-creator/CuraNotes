@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#0b0f17">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CuraNotes">
+  <title>CuraNotes - Convierte tus Guardados de Instagram y TikTok en Notas Inteligentes</title>
+  <meta name="description" content="Organizador visual y categorizador inteligente para tus guardados de Instagram, TikTok y la web. Convierte publicaciones en recuadros interactivos de notas con recetas, lugares, arte y curiosidades.">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Background Ambient Glows -->
+  <div class="ambient-glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow-2" aria-hidden="true"></div>
+
+  <!-- App Shell -->
+  <div class="app-container">
+
+    <!-- ====================================================================
+         Sidebar (Carpetas y Categorías)
+         ==================================================================== -->
+    <aside class="sidebar" id="sidebar" aria-label="Navegación de carpetas">
+      <div class="sidebar-header">
+        <a href="#" class="logo-badge" id="logoLink">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <div class="logo-text">
+            <h1>CuraNotes</h1>
+            <span>Smart Saver</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="sidebar-content">
+        <!-- Folders Section -->
+        <section>
+          <div class="sidebar-section-title">
+            <span>Carpetas Temáticas</span>
+            <button class="btn-add-folder" id="btnOpenNewFolder" title="Crear nueva carpeta con reglas inteligentes" aria-label="Añadir carpeta">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+          <nav>
+            <ul class="folder-list" id="folderList">
+              <!-- Dynamically populated by ui.js -->
+            </ul>
+          </nav>
+        </section>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-ghost btn-sm" id="btnOpenSocialSyncSidebar" style="width: 100%; justify-content: flex-start; color: #a5b4fc;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          Conectar TikTok / IG / YouTube
+        </button>
+        <button class="btn btn-secondary btn-sm" id="btnExportData" style="width: 100%; justify-content: flex-start;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Exportar Copia de Seguridad
+        </button>
+        <button class="btn btn-ghost btn-sm" id="btnOpenSettings" style="width: 100%; justify-content: flex-start;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Configuración IA & Almacenamiento
+        </button>
+        <button class="btn btn-ghost btn-sm" id="btnResetDemo" style="width: 100%; justify-content: flex-start; color: var(--text-dim);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Restablecer Ejemplos
+        </button>
+      </div>
+    </aside>
+
+    <!-- Backdrop oscuro para móvil al abrir el menú lateral -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
+
+    <!-- ====================================================================
+         Main Workspace Area
+         ==================================================================== -->
+    <main class="main-wrapper">
+
+      <!-- Topbar with Search, Filters & Actions -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú de carpetas">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <div class="search-container">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <input type="search" class="search-input" id="searchInput" placeholder="Buscar por receta, lugar, autor, ingrediente o etiqueta..." aria-label="Buscar notas">
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Platform Filter Chips -->
+          <div class="filter-chips" role="radiogroup" aria-label="Filtrar por origen">
+            <button class="chip-btn active" data-filter="all">Todos</button>
+            <button class="chip-btn" data-filter="youtube">YouTube 🎬</button>
+            <button class="chip-btn" data-filter="instagram">Instagram</button>
+            <button class="chip-btn" data-filter="tiktok">TikTok</button>
+            <button class="chip-btn" data-filter="starred">Favoritos ⭐</button>
+          </div>
+
+          <!-- Social Sync Button -->
+          <button class="btn btn-secondary" id="btnOpenSocialSync" title="Conectar cuentas de TikTok, Instagram y YouTube">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span>Conectar Redes</span>
+          </button>
+
+          <!-- Primary Ingest Action Button -->
+          <button class="btn btn-primary" id="btnOpenIngest">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+              <path d="M12 5v14M5 12h14"/>
+            </svg>
+            <span>Capturar Guardado</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area">
+
+        <!-- Active View Header -->
+        <div class="content-header">
+          <div>
+            <div class="folder-title-view">
+              <span id="currentFolderEmoji" style="font-size: 1.8rem;">✨</span>
+              <h2 id="currentFolderTitle">Todos los Guardados</h2>
+              <span class="folder-count" id="notesCountBadge">5 notas</span>
+            </div>
+            <p class="folder-subtitle" id="currentFolderSubtitle">Convierte publicaciones y reels en recuadros organizados</p>
+          </div>
+        </div>
+
+        <!-- Auto-Ingest 100% Automatic Banner -->
+        <div class="auto-ingest-banner">
+          <div class="banner-header-row">
+            <span class="banner-badge">⚡ Auto-Organizador 100% Automático</span>
+            <span class="zero-storage-shield">🛡️ Modo Zero Storage: 0 MB de video guardado</span>
+          </div>
+          <div class="banner-input-wrap">
+            <input type="url" class="banner-input" id="quickPasteInput" placeholder="Pega aquí el enlace de YouTube (video largo), TikTok o Instagram Reel..." aria-label="Enlace a auto-organizar">
+            <button class="btn btn-primary" id="btnQuickOrganize" style="height: 48px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Auto-Organizar</span>
+            </button>
+            <button class="btn btn-secondary" id="btnClipboardPaste" style="height: 48px;" title="Pegar automáticamente desde el portapapeles">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+              <span>Pegar Portapapeles</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Notes Grid ("Recuadros") -->
+        <section class="notes-grid" id="notesGrid" aria-label="Colección de notas">
+          <!-- Dynamically populated by ui.js -->
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ====================================================================
+       Modal: Capturador Inteligente de Guardados (Smart Ingestion)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="ingestModal" role="dialog" aria-modal="true" aria-labelledby="ingestModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-title-icon">📥</div>
+          <div>
+            <h3 class="modal-title" id="ingestModalTitle">Convertir Guardado en Nota</h3>
+            <p class="modal-subtitle">Pega un enlace de YouTube, Instagram o TikTok o ingresa contenido libre</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="btnCloseIngest" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Quick 1-Click Preset Demonstrators -->
+        <div class="sample-presets-group">
+          <span class="presets-label">⚡ Pruebas rápidas en 1 clic (incluye videos largos con minutos):</span>
+          <div class="presets-pills-row">
+            <button class="preset-pill-btn" data-preset="yt_recipe">🎬 YouTube: Paella Masterclass (45m)</button>
+            <button class="preset-pill-btn" data-preset="yt_documentary">🌌 YouTube: Origen del Tiempo (32m)</button>
+            <button class="preset-pill-btn" data-preset="pasta">🍝 Pasta Limone (Reel)</button>
+            <button class="preset-pill-btn" data-preset="tokyo">⛩️ Spots Tokio (TikTok)</button>
+            <button class="preset-pill-btn" data-preset="woodlamp">🔨 Repisa Hexagonal (DIY)</button>
+          </div>
+        </div>
+
+        <!-- URL Input -->
+        <div class="form-group">
+          <label class="form-label" for="inputUrl">Enlace de YouTube, Instagram o TikTok (Opcional)</label>
+          <input type="url" id="inputUrl" class="form-input" placeholder="https://www.youtube.com/watch?v=... o https://www.tiktok.com/@...">
+        </div>
+
+        <!-- Title Input -->
+        <div class="form-group">
+          <label class="form-label" for="inputTitle">Título de la Nota</label>
+          <input type="text" id="inputTitle" class="form-input" placeholder="Ej: Pasta Rigatoni con salsa de nueces o Mirador en Roma">
+        </div>
+
+        <!-- Description / Recipe / Checklist Input -->
+        <div class="form-group">
+          <label class="form-label" for="inputDesc">
+            <span>Contenido / Ingredientes / Pasos</span>
+            <span style="font-size: 0.72rem; color: var(--accent-primary); font-weight: normal;">Usa viñetas o "- [ ]" para listas</span>
+          </label>
+          <textarea id="inputDesc" class="form-textarea" placeholder="Pega el texto de la receta, ingredientes, materiales necesarios o notas personales..."></textarea>
+        </div>
+
+        <!-- Smart Auto-Routing Live Preview Box -->
+        <div class="routing-preview-box" id="routingPreviewBox">
+          <div class="routing-info">
+            <span class="routing-sparkle">✨</span>
+            <div>
+              <div class="routing-text-main">Enrutamiento Inteligente por Contenido</div>
+              <div class="routing-text-sub" id="detectedFolderConfidence">El clasificador asignará la carpeta según el texto</div>
+            </div>
+          </div>
+          <div class="routing-badge" id="detectedFolderBadge">
+            <span>📁</span>
+            <span>Detectando...</span>
+          </div>
+        </div>
+
+        <!-- Manual Category Override -->
+        <div class="form-group">
+          <label class="form-label" for="inputCustomFolder">Forzar Carpeta Manual (Opcional)</label>
+          <select id="inputCustomFolder" class="form-select">
+            <!-- Dynamically populated by ui.js -->
+          </select>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnCancelIngest">Cancelar</button>
+        <button class="btn btn-primary" id="btnSaveNote">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Crear Recuadro de Nota
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       Modal: Visor y Editor de Detalle de Nota
+       ==================================================================== -->
+  <div class="modal-backdrop" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailModalTitle">
+    <div class="modal-dialog lg">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="card-origin-pill" id="detailPlatformPill">TIKTOK</span>
+          <div>
+            <h3 class="modal-title" id="detailModalTitle">Detalle y Edición del Guardado</h3>
+            <p class="modal-subtitle" id="detailAuthor">@autor</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="btnCloseDetail" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <img id="detailCoverImg" src="" alt="Portada del guardado" class="detail-banner-img">
+
+        <div class="form-group">
+          <label class="form-label" for="detailTitle">Título</label>
+          <input type="text" id="detailTitle" class="form-input">
+        </div>
+
+        <div class="detail-meta-grid">
+          <div class="detail-meta-item">
+            <span class="meta-item-label">Mover de Carpeta</span>
+            <select id="detailFolderSelect" class="form-select" style="padding: 6px 10px; font-size: 0.85rem;"></select>
+          </div>
+          <div class="detail-meta-item">
+            <span class="meta-item-label">Publicación Original</span>
+            <a id="detailSourceLink" href="#" target="_blank" rel="noopener noreferrer" class="meta-item-value" style="color: var(--accent-primary); text-decoration: none; display: flex; align-items: center; gap: 4px;">
+              <span>Abrir Enlace</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="detailSummary">Resumen Extraído</label>
+          <textarea id="detailSummary" class="form-textarea" rows="3"></textarea>
+        </div>
+
+        <!-- Editable Checklist Section -->
+        <div class="form-group">
+          <label class="form-label">Lista Interactiva / Ingredientes / Tareas</label>
+          <div class="editable-checklist-container">
+            <div id="detailChecklistList" style="display: flex; flex-direction: column; gap: 6px;"></div>
+            <div class="checklist-add-row">
+              <input type="text" id="detailNewChecklistText" class="form-input" placeholder="Añadir nuevo elemento o ingrediente..." style="padding: 8px 12px; font-size: 0.85rem;">
+              <button class="btn btn-secondary btn-sm" id="btnAddChecklistItem">Añadir</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="detailPersonalNotes">Mis Notas Personales & Recordatorios</label>
+          <textarea id="detailPersonalNotes" class="form-textarea" rows="2" placeholder="Agrega consejos propios, ajustes a la receta o detalles adicionales..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="document.getElementById('detailModal').classList.remove('active')">Cerrar</button>
+        <button class="btn btn-primary" id="btnSaveDetail">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       Modal: Crear Nueva Carpeta con Reglas de Auto-Enrutamiento
+       ==================================================================== -->
+  <div class="modal-backdrop" id="folderModal" role="dialog" aria-modal="true" aria-labelledby="folderModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-title-icon">📁</div>
+          <div>
+            <h3 class="modal-title" id="folderModalTitle">Nueva Carpeta Inteligente</h3>
+            <p class="modal-subtitle">Crea una categoría personalizada con auto-clasificación</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="btnCloseFolder" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="newFolderName">Nombre de la Carpeta</label>
+          <input type="text" id="newFolderName" class="form-input" placeholder="Ej: Moda & Outfits, Rutinas de Gym, Libros">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group">
+            <label class="form-label">Emoji Identificador</label>
+            <!-- Hidden input keeps the selected value -->
+            <input type="hidden" id="newFolderEmoji" value="📁">
+            <!-- Visual trigger -->
+            <button type="button" id="emojiPickerTrigger" class="emoji-picker-trigger" aria-haspopup="true" aria-expanded="false">
+              <span id="emojiPickerPreview">📁</span>
+              <span class="emoji-picker-caret">▾</span>
+            </button>
+            <!-- Emoji Panel -->
+            <div id="emojiPickerPanel" class="emoji-picker-panel" role="dialog" aria-label="Selector de emojis">
+              <!-- Category tabs -->
+              <div class="ep-tabs" id="epTabs"></div>
+              <!-- Emoji grid -->
+              <div class="ep-grid" id="epGrid"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="newFolderColor">Color Distintivo</label>
+            <input type="color" id="newFolderColor" class="form-input" value="#3b82f6" style="height: 46px; padding: 4px;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="newFolderKeywords">
+            <span>Palabras Clave para Enrutamiento Automático</span>
+          </label>
+          <textarea id="newFolderKeywords" class="form-textarea" rows="3" placeholder="ropa, outfit, moda, zapatillas, estilo, look, camisa (separadas por comas)"></textarea>
+          <span style="font-size: 0.76rem; color: var(--text-dim); line-height: 1.4;">
+            Cualquier guardado que contenga estas palabras en su título, hashtags o descripción se enviará automáticamente a esta carpeta.
+          </span>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnCancelFolder">Cancelar</button>
+        <button class="btn btn-primary" id="btnCreateFolder">Crear Carpeta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       Modal: Configuración de IA & Modo Almacenamiento
+       ==================================================================== -->
+  <div class="modal-backdrop" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-title-icon">⚙️</div>
+          <div>
+            <h3 class="modal-title" id="settingsModalTitle">Configuración de IA & Almacenamiento</h3>
+            <p class="modal-subtitle">Garantía Zero Video Storage y motor de extracción</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="btnCloseSettings" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-sm); padding: 14px; display: flex; gap: 12px; align-items: flex-start;">
+          <div style="font-size: 1.4rem;">🛡️</div>
+          <div>
+            <div style="font-weight: 700; color: #10b981; font-size: 0.9rem;">Protección de Espacio: 100% Zero Video Storage Activo</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; margin-top: 4px;">
+              Los videos de TikTok e Instagram nunca se guardan en tu memoria ni disco. La aplicación solo almacena el texto estructurado (receta, ingredientes, lugares) y reproduce el video original por streaming externo.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="settingApiKey">
+            <span>Google Gemini API Key (Opcional)</span>
+            <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary); text-decoration: none; font-size: 0.76rem;">Obtener clave gratuita &rarr;</a>
+          </label>
+          <input type="password" id="settingApiKey" class="form-input" placeholder="AIzaSy... (Opcional para transcripción de IA ultra precisa)">
+          <span style="font-size: 0.74rem; color: var(--text-dim); line-height: 1.4;">
+            Si ingresas tu clave gratuita de Google Gemini, el transcriptor de IA analizará de forma nativa los contenidos. Si la dejas vacía, se usará el motor semántico interno de CuraNotes.
+          </span>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnCancelSettings">Cancelar</button>
+        <button class="btn btn-primary" id="btnSaveSettings">Guardar Configuración</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       Modal: Conexión con Redes Sociales (TikTok, Instagram & YouTube)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="socialModal" role="dialog" aria-modal="true" aria-labelledby="socialModalTitle">
+    <div class="modal-dialog lg">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-title-icon">🔗</div>
+          <div>
+            <h3 class="modal-title" id="socialModalTitle">Conectar Redes Sociales</h3>
+            <p class="modal-subtitle">Sincroniza tus guardados y favoritos de TikTok, Instagram y YouTube en notas automáticas</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="btnCloseSocialModal" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5;">
+          Vincula tus cuentas o pega enlaces directos de tus guardados. CuraNotes extraerá el contenido, generará recetas/itinerarios/materiales y lo clasificará automáticamente en su carpeta correspondiente (o en <strong>General</strong> si no hay una específica).
+        </p>
+
+        <!-- Social Connection Platforms Grid -->
+        <div class="social-connect-grid">
+          <!-- TikTok Card -->
+          <div class="social-connect-card" id="social-card-tiktok" data-platform="tiktok">
+            <div class="social-connect-icon tiktok">🎵</div>
+            <div class="social-connect-name">TikTok</div>
+            <div class="social-connect-status" id="social-status-tiktok">No conectado</div>
+            <p style="font-size: 0.72rem; color: var(--text-dim); margin-top: 2px;">Favoritos & Colecciones</p>
+            <button class="btn btn-secondary btn-sm" style="margin-top: 6px; width: 100%;" id="btnToggleConnectTikTok">Vincular Cuenta</button>
+          </div>
+
+          <!-- Instagram Card -->
+          <div class="social-connect-card" id="social-card-instagram" data-platform="instagram">
+            <div class="social-connect-icon instagram">📸</div>
+            <div class="social-connect-name">Instagram</div>
+            <div class="social-connect-status" id="social-status-instagram">No conectado</div>
+            <p style="font-size: 0.72rem; color: var(--text-dim); margin-top: 2px;">Publicaciones & Reels Guardados</p>
+            <button class="btn btn-secondary btn-sm" style="margin-top: 6px; width: 100%;" id="btnToggleConnectInstagram">Vincular Cuenta</button>
+          </div>
+
+          <!-- YouTube Card -->
+          <div class="social-connect-card" id="social-card-youtube" data-platform="youtube">
+            <div class="social-connect-icon youtube">🎬</div>
+            <div class="social-connect-name">YouTube</div>
+            <div class="social-connect-status" id="social-status-youtube">No conectado</div>
+            <p style="font-size: 0.72rem; color: var(--text-dim); margin-top: 2px;">Ver más tarde & Playlists</p>
+            <button class="btn btn-secondary btn-sm" style="margin-top: 6px; width: 100%;" id="btnToggleConnectYouTube">Vincular Cuenta</button>
+          </div>
+        </div>
+
+        <!-- Sync Button for Linked Accounts -->
+        <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid var(--border-glow); border-radius: var(--radius-sm); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="font-weight: 700; color: #a5b4fc; font-size: 0.92rem;">⚡ Sincronización Automática de Guardados</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
+              Consulta los guardados recientes de tus cuentas vinculadas y crea las notas con 1 clic.
+            </div>
+          </div>
+          <button class="btn btn-primary" id="btnSyncAllConnected">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l6 6"/></svg>
+            <span>Sincronizar Guardados Ahora</span>
+          </button>
+        </div>
+
+        <!-- Import Direct Saved URL -->
+        <div class="form-group">
+          <label class="form-label" for="socialImportUrl">O Importar Enlace Directo de Guardado / Perfil</label>
+          <div class="social-import-url-row">
+            <input type="url" id="socialImportUrl" class="form-input" placeholder="https://www.tiktok.com/@... o https://www.instagram.com/reel/...">
+            <button class="btn btn-primary" id="btnImportSocialUrl" style="flex-shrink: 0;">
+              <span>Auto-Crear Nota</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- One-Click Quick Import Demonstrator Packs -->
+        <div class="sample-presets-group">
+          <span class="presets-label">⚡ Pruebas rápidas de sincronización (importar paquetes de guardados):</span>
+          <div class="presets-pills-row">
+            <button class="preset-pill-btn" id="btnQuickSyncTikTok">🎵 Importar lote TikTok (3 guardados)</button>
+            <button class="preset-pill-btn" id="btnQuickSyncInstagram">📸 Importar lote Instagram (3 guardados)</button>
+            <button class="preset-pill-btn" id="btnQuickSyncYouTube">🎬 Importar lote YouTube (2 videos)</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnCancelSocialModal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       Overlay: Escáner IA de Procesamiento en Tiempo Real
+       ==================================================================== -->
+  <div class="scanner-overlay" id="scannerOverlay" role="dialog" aria-modal="true" aria-label="Procesando guardado con IA">
+    <div class="scanner-box">
+      <div class="scanner-radar">⚡</div>
+      <div>
+        <h3 class="scanner-title">Analizando Guardado...</h3>
+        <p class="scanner-status-step" id="scannerStatusStep">Conectando con el enlace...</p>
+      </div>
+      <div class="scanner-progress-bar-bg">
+        <div class="scanner-progress-fill" id="scannerProgressBar"></div>
+      </div>
+      <div class="zero-storage-shield">
+        <span>🛡️</span>
+        <span>Descartando archivo de video (Zero Storage)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Universal JavaScript Bundle -->
+  <script src="js/bundle.js"></script>
+</body>
+</html>

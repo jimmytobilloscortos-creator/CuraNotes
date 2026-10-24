@@ -1,0 +1,79 @@
+/* ==========================================================================
+   CuraNotes - Micro-animations & Transitions
+   ========================================================================== */
+
+/* Fade In Animation for Grid Cards */
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.note-card {
+  animation: cardAppear 0.35s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+/* Stagger cards in list */
+.note-card:nth-child(1) { animation-delay: 0.03s; }
+.note-card:nth-child(2) { animation-delay: 0.06s; }
+.note-card:nth-child(3) { animation-delay: 0.09s; }
+.note-card:nth-child(4) { animation-delay: 0.12s; }
+.note-card:nth-child(5) { animation-delay: 0.15s; }
+.note-card:nth-child(6) { animation-delay: 0.18s; }
+.note-card:nth-child(7) { animation-delay: 0.21s; }
+.note-card:nth-child(8) { animation-delay: 0.24s; }
+
+/* Pulse Glow for AI Router */
+@keyframes routerPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+}
+
+.routing-pulse {
+  animation: routerPulse 2s infinite;
+}
+
+/* Shimmer Highlight */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, #ffffff 0%, #a5b4fc 50%, #ffffff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
